@@ -1,0 +1,38 @@
+/**************************************************************************/
+/*********               STYLE OF LOADING PAGE                      *******/
+/*********                   WRITTEN BY                             *******/
+/*********   Mathis Fasolo ; Alexis Jolin ; Etienne Platini         *******/
+/**************************************************************************/
+@font-face {
+  font-family: 'Caniste';
+  src: url("../fonts/Caniste.ttf"); }
+
+body {
+  background-color: #15214E;
+  color: white;
+  padding-left: 0; }
+
+#logo {
+  width: 313px;
+  height: 279px; }
+
+.spinner-layer {
+  border-color: white; }
+
+#loadingData {
+  color: white;
+  font-style: italic; }
+
+.appName {
+  font-family: 'Caniste';
+  color: #EF5822;
+  text-align: center;
+  font-size: 58pt;
+  margin-bottom: 10%; }
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto; }
+
+/*# sourceMappingURL=loading.css.map */

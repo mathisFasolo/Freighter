@@ -1,0 +1,41 @@
+{
+  "name": "freighter",
+  "version": "0.0.1",
+  "description": "a NodeJS webapp to manage Docker Containers",
+  "main": "./bin/www.js",
+  "bin": {
+    "freighter": "www.js"
+  },
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies":
+  {
+    "cookie-parser": "~1.4.3",
+    "cron": "^1.3.0",
+    "debug": "~2.6.9",
+    "express": "~4.16.0",
+    "fs": "0.0.1-security",
+    "http-errors": "~1.6.2",
+    "jquery": "^3.3.1",
+    "morgan": "~1.9.0",
+    "node-cron": "^1.2.1",
+    "node-sass-middleware": "0.11.0",
+    "os-utils": "0.0.14",
+    "pug": "2.0.0-beta11"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mathisFasolo/Freighter.git"
+  },
+  "keywords": [
+    "NodeJS",
+    "Docker"
+  ],
+  "author": "Mathis Fasolo, Etienne Platini, Alexis Jolin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mathisFasolo/Freighter/issues"
+  },
+  "homepage": "https://github.com/mathisFasolo/Freighter#readme"
+}

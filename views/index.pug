@@ -1,0 +1,61 @@
+extends layout
+
+block content
+            div.mainContent.row
+                div.col-12
+                    //menu notification
+                    div.row
+                        div#mySystemMatrics.col-9
+                            h2.col-12 My System Maitrics :
+                            div.row
+                                div.col-8
+                                    canvas#myChart.graphMaitrics
+                                div.col-4
+                                    div.systemOverview
+                                        p.row
+                                            span.maitricsType CPU :&nbsp;
+                                            if(CPU_USAGE >= 50)
+                                                span#cpuUsage.importantData #{CPU_USAGE}
+                                            else
+                                                span#cpuUsage #{CPU_USAGE}
+                                            span %
+                                        p.row
+                                            span.maitricsType RAM &nbsp;
+                                                em (USED)
+                                            span.maitricsType &nbsp; : &nbsp;
+                                            span#ramUsage #{RAM_USAGE}
+                                            span Go / &nbsp;
+                                            span#ramSys #{RAM_SYS}
+                                            span Go
+                        div#zoneError.col-3
+                            div.alert-warning.alert-dismissible.alert.fade.show(role="alert")
+                                button.close(type="button", data-dismiss="alert", aria-label="Close")
+                                    span(aria-hidden="true") &times;
+                                span.notificationMessage Mode developpeur activé, les erreurs du systemes et rencontrées par l'application s'afficheront ici
+                    div#myFreight.row
+                        h2.col-12 My Freight :
+                        - var i = 0
+                        while i < arrayContainer.length
+                            div.envContainer.col-3(value=arrayContainer[i].id)
+                                div.row
+                                    div.col-12
+                                        span.row.environnementName= arrayContainer[i].nameApp
+                                        span.row.environnementType= arrayContainer[i].typeApp
+                                    if arrayContainer[i].isStarted == true
+                                        span.col-4.appStatus(title="Running")
+                                            svg.center(height="50", width="50")
+                                                circle(cx="20", cy="20", r="15", stroke="white", stroke-width="1", fill="green")
+                                    else
+                                        span.col-4.appStatus(title="Stopped")
+                                            svg.center(height="50", width="50")
+                                                circle(cx="20", cy="20", r="15", stroke="white", stroke-width="1", fill="red")
+                                    div.col-8.MoreInfo= arrayContainer[i].infoTextApp
+                                    div.row.controlButton
+                                        div.toggleRun.stop.col-4(style=arrayContainer[i].isStarted ? "" : "display:none") STOP
+                                        div.otherAction.restart.col-4(style=arrayContainer[i].isStarted ? "" : "display:none") RESTART
+                                        div.toggleRun.start.col-4(style=arrayContainer[i].isStarted ? "display:none" : "") START
+                            -i++;
+                        span.col-2.newContainer
+                            button#addNewContainer.center add new container
+
+

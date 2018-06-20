@@ -1,0 +1,35 @@
+doctype html
+html
+    head
+        title= title
+        link(rel='stylesheet', href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css")
+        link(rel='stylesheet', href='/stylesheets/bootstrap/bootstrap.min.css')
+        link(rel='stylesheet', href='/stylesheets/loading.css')
+    body#firstPage
+        main.container
+            div.row
+                img.center#logo(src='./images/logoFreighter.svg', alt="main logo")
+            div.row
+                h1.appName.center Freighter
+            div.row
+                div.center
+                    div.preloader-wrapper.big.active
+                        div.spinner-layer.spinner-white-only
+                            div.circle-clipper.left
+                                div.circle
+                            div.gap-patch
+                                div.circle
+                            div.circle-clipper.right
+                                div.circle
+            div.row
+                p#loadingData.center
+    script(src="https://code.jquery.com/jquery-3.3.1.min.js", integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=", crossorigin="anonymous")
+    script.
+        var arrayLoading = ["Loading User Preferences", "Loading Containers", "Loading Platform Interface", "ok"];
+        function doSetTimeout(i) { setTimeout(function () { $("#loadingData").text(arrayLoading[i]); console.log(arrayLoading[i]) }, i * 1000);}
+        for (var i in arrayLoading) doSetTimeout(i);
+        setTimeout(function(){document.location.href="/dashboard"}, 6000);
+
+
+
+

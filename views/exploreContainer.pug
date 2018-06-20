@@ -1,0 +1,24 @@
+extends layout
+
+block content
+    div.mainContent
+        h1= container.nameApp
+        div.row
+            h2.col-2= container.typeApp
+            div.col-3
+                if container.isStarted == true
+                    span.col-4.appStatus(title="Running")
+                        svg.center(height="50", width="50")
+                            circle(cx="20", cy="20", r="15", stroke="white", stroke-width="1", fill="green")
+                else
+                    span.col-4.appStatus(title="Stopped")
+                        svg.center(height="50", width="50")
+                            circle(cx="20", cy="20", r="15", stroke="white", stroke-width="1", fill="red")
+            div.col-5
+                a.btn.btn-default(href=container.url)  >Launch
+            div.col-4
+                if container.isStarted == true
+                    div.toggleRun.stop.col-4 STOP
+                    div.otherAction.restart.col-4 RESTART
+                else
+                    div.toggleRun.start START
