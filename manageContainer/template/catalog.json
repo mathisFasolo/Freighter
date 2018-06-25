@@ -1,0 +1,11 @@
+{
+  "catalogContainer": [
+    {
+      "type": "test",
+      "containerRepo": "test",
+      "repoOfficiel": true,
+      "RAM_allowed_by_default": "100m",
+      "CPU_allowed_by_default": "0.5"
+    }
+  ]
+}
