@@ -9,6 +9,7 @@ let os = require("os");
 let sysManager = require("../system/systemRessourceManagement");
 let monitoringChart =  require("../visual/monitoringCharts");
 let util = require("../util.js");
+let catalog = require("../catalog/catalog");
 
 router
     .get('/', function(req, res, next)
@@ -19,11 +20,11 @@ router
     })
     .get('/dashboard', function (req, res, next)
     {
-        console.log(os.cpus());
         // the dashboard start page
         let CPU = sysManager.getCPU_USAGE();
         let RAM_USED = sysManager.getRAM_USED();
         let RAM_SYS = sysManager.getRAM_SYS();
+        let pageTitle = 'My Dashboard';
         // TODO get all containers
         let cryptoPoly =
             {
@@ -34,10 +35,6 @@ router
                 infoTextApp: "Lorem Ipsum Doloris ..."
             };
         let arrayContainers = [cryptoPoly, cryptoPoly, cryptoPoly];
-        let RAM_USAGE = sysManager.getRAM_USAGE().then(function (value)
-        {
-          console.log(value);
-        });
         Promise.all([CPU, RAM_USED, RAM_SYS])
             .then(function(values)
             {
@@ -45,9 +42,15 @@ router
                 CPU = Number(values[0]).toFixed(2);
                 RAM_USED = values[1];
                 RAM_SYS = values[2];
-                res.render('index', {"CPU_USAGE" : CPU,"RAM_USAGE" : RAM_USED, "RAM_SYS" : RAM_SYS, "arrayContainer" : arrayContainers});
+                res.render('index', {"CPU_USAGE" : CPU,"RAM_USAGE" : RAM_USED, "RAM_SYS" : RAM_SYS, "arrayContainer" : arrayContainers, pageTitle : pageTitle});
             });
 
+    })
+    .get('/catalog', function (req, res, next)
+    {
+        let pageTitle = "Catalog";
+        let arrayCatalog = JSON.parse(catalog.getCatalog());
+        res.render('catalog',{pageTitle: pageTitle, arrayContainerCatalog: arrayCatalog});
     })
     .get('/repeatManager/cpu', function (req, res, next)
     {
@@ -111,11 +114,19 @@ router
     })
     .get('/container/stopContainer', function (req, res, next)
     {
+        console.log("container stopped !");
         // TODO  appel fonction container
         res.send(true);
     })
     .get('/container/startContainer', function (req, res, next)
     {
+        console.log("container started !");
+        // TODO appel fonction container
+        res.send(true);
+    })
+    .get('/container/restartContainer', function (req, res, next)
+    {
+        console.log("container restarted !");
         // TODO appel fonction container
         res.send(true);
     });

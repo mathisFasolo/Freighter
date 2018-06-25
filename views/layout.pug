@@ -1,34 +1,37 @@
 doctype html
 html
     head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1, shrink-to-fit=no")
         title Freighter
         link(rel="stylesheet", href="https://fonts.googleapis.com/icon?family=Material+Icons")
+        //link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css")
         link(rel='stylesheet', href='/stylesheets/bootstrap/bootstrap.min.css')
-        link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css")
         link(rel='stylesheet', href='/stylesheets/style.css')
-    body.container-fluid
-        div.row
-            nav.col-2
-
-                ul.row
+    body.container-fluid.row
+            nav.col-2.container
+                ul.container-fluid
                     li.row
                         a(href="/dashboard#mySystemMaitrics") My System Maitrics
                     li.row
                         a(href="/dashboard#myFreight") My Freight
+                    li.row
+                        a(href="/catalog") Catalogue
                 div.row.appNameContainer
-                    a(href="/dashboard")
+                    a.center(href="/dashboard")
                         span.appName Freighter
             main.col-lg-10
-                div.notificationBar.row
-                    span.col-3.pageTitle
-                        h1 My Dashboard
-                    span#modeNotification.col-2.offset-4
-                        i.material-icons developer_mode
-                        span  Developper Mode
-                    span.col-2#notification_container
-                        i#notification.material-icons notifications
-                        i#notification_off.material-icons(style="display : none") notifications_off
-                        span#notificationBadge.badge.badge-light(style="display : none")
+                div.notificationBar.container-fluid
+                    div.row
+                        span.col-3.pageTitle
+                            h1= pageTitle
+                        span#modeNotification.col-2.offset-4
+                            i.material-icons developer_mode
+                            span  Developper Mode
+                        span.col-2#notification_container
+                            i#notification.material-icons notifications
+                            i#notification_off.material-icons(style="display : none") notifications_off
+                            span#notificationBadge.badge.badge-light(style="display : none")
                 block content
     script(src="https://code.jquery.com/jquery-3.3.1.min.js", integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=", crossorigin="anonymous")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js")

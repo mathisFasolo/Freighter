@@ -1,8 +1,7 @@
 extends layout
 
 block content
-            div.mainContent.row
-                div.col-12
+            div.mainContent.container-fluid
                     //menu notification
                     div.row
                         div#mySystemMatrics.col-9
@@ -36,20 +35,22 @@ block content
                         h2.col-12 My Freight :
                         - var i = 0
                         while i < arrayContainer.length
-                            div.envContainer.col-3(value=arrayContainer[i].id)
-                                div.row
-                                    div.col-12
+                            div.envContainer.col-3.container-fluid(value=arrayContainer[i].id)
+                                    div.container
                                         span.row.environnementName= arrayContainer[i].nameApp
                                         span.row.environnementType= arrayContainer[i].typeApp
                                     if arrayContainer[i].isStarted == true
-                                        span.col-4.appStatus(title="Running")
-                                            svg.center(height="50", width="50")
-                                                circle(cx="20", cy="20", r="15", stroke="white", stroke-width="1", fill="green")
+                                        div.row
+                                            div.col-3.appStatus(title="Running")
+                                                svg.center(height="50", width="50")
+                                                    circle(cx="20", cy="20", r="15", stroke="white", stroke-width="1", fill="green")
+                                            div.col-8.MoreInfo= arrayContainer[i].infoTextApp
                                     else
-                                        span.col-4.appStatus(title="Stopped")
-                                            svg.center(height="50", width="50")
-                                                circle(cx="20", cy="20", r="15", stroke="white", stroke-width="1", fill="red")
-                                    div.col-8.MoreInfo= arrayContainer[i].infoTextApp
+                                        div.row
+                                            div.col-3.appStatus(title="Stopped")
+                                                svg.center(height="50", width="50")
+                                                    circle(cx="20", cy="20", r="15", stroke="white", stroke-width="1", fill="red")
+                                            div.col-8.MoreInfo= arrayContainer[i].infoTextApp
                                     div.row.controlButton
                                         div.toggleRun.stop.col-4(style=arrayContainer[i].isStarted ? "" : "display:none") STOP
                                         div.otherAction.restart.col-4(style=arrayContainer[i].isStarted ? "" : "display:none") RESTART

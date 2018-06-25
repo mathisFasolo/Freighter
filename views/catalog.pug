@@ -1,0 +1,24 @@
+extends layout
+
+block content
+    div.mainContent
+        section.containerFamily
+            h2 WebDevelopment
+            div.d-flex.flex-row
+                each container in arrayContainerCatalog
+                    if container.containerFamily === 'WebDevelopment'
+                        include catalogContainer
+        section.containerFamily
+            h2 DataBases
+            div.d-flex.flex-row
+                each container in arrayContainerCatalog
+                    if container.containerFamily === 'Databases'
+                        include catalogContainer
+        section.containerFamily
+            h2 Operating Systems
+            div.d-flex.flex-row
+                each container in arrayContainerCatalog
+                    if container.containerFamily === 'OS'
+                        include catalogContainer
+
+

@@ -116,39 +116,80 @@ $("#addNewContainer").click(function ()
     displayErrors(["problème"]);
 });*/
 
+/**
+ * Cette fonction lance l'annimation au clic sur le container
+ * @param queryThis
+ * @param boutonClick
+ */
+function toggleRunContainer(queryThis, boutonClick)
+{
+    let thisButton = queryThis;
+    thisButton.parent().parent().find(".appStatus").find("svg").hide();
+    thisButton.parent().parent().find(".appStatus").append(
+        '<div class="spinner center">' +
+            '<div class="double-bounce1"></div>' +
+            '<div class="double-bounce2"></div>' +
+        '</div>');
+    thisButton.parent().hide();
+    let URL = "";
+    if(boutonClick === "RESTART") URL = "/container/restartContainer";
+    else if(boutonClick === "START") URL = "/container/startContainer";
+    else if(boutonClick === "STOP") URL = "/container/stopContainer";
+    $.ajax({url: URL, type: "GET", success: function (result)
+        {
+            setTimeout(function ()
+            {
+                thisButton.parent().parent().find(".appStatus").find(".spinner").remove();
+                thisButton.parent().parent().find(".appStatus").find("svg").show();
+                if(boutonClick === "RESTART")
+                {
+                    thisButton.parent().parent().find(".appStatus").attr("title", "Stopped").find("circle").attr("fill", "green");
+                    thisButton.parent().show();
+                }
+                else if(boutonClick === "START")
+                {
+                    thisButton.parent().parent().find(".appStatus").attr("title", "Running").find("circle").attr("fill", "green");
+                    thisButton.hide();
+                    thisButton.parent().show().find('.otherAction').show();
+                    thisButton.parent().find('.stop').show();
+                }
+                else if(boutonClick === "STOP")
+                {
+                    thisButton.parent().parent().find(".appStatus").attr("title", "Running").find("circle").attr("fill", "red");
+                    thisButton.hide();
+                    thisButton.parent().show().find('.otherAction').hide();
+                    thisButton.parent().find('.start').show();
+                }
+            }, 1000);
+
+        }, error: function (err)
+        {
+            console.log(err);
+            displayErrors(err);
+        }});
+}
+
+
 $(".stop").click(function ()
 {
-    let thisStopButton = $(this);
-    $.ajax({url: "/container/stopContainer", type: "GET", success: function (result)
-       {
-           thisStopButton.parent().parent().find(".appStatus").attr("title", "Stopped").find("circle").attr("fill", "red");
-           thisStopButton.parent().find('.otherAction').hide();
-           thisStopButton.hide();
-           thisStopButton.parent().find('.start').show();
-       }, error: function (err)
-       {
-           console.log(err);
-           displayErrors(err.responseText);
-       }});
+   toggleRunContainer($(this), "STOP");
 });
 
 $(".start").click(function ()
 {
-    let thisStartButton = $(this);
-    $.ajax({url: "/container/startContainer", type: "GET", success: function (result)
-        {
-            thisStartButton.parent().parent().find(".appStatus").attr("title", "Stopped").find("circle").attr("fill", "green");
-            thisStartButton.parent().find('.otherAction').show();
-            thisStartButton.hide();
-            thisStartButton.parent().find('.stop').show();
-        }, error: function (err)
-        {
-            console.log(err);
-            displayErrors(err.responseText);
-        }});
+    toggleRunContainer($(this), "START");
 });
 
-$("#restart").click(function ()
+$(".restart").click(function()
 {
+    toggleRunContainer($(this), "RESTART");
+});
 
+/************************************/
+// Travaille l'esthétisme
+
+$(function ()
+{
+   let colorImageCointainer = $(".imageContainer").find('.containerImage').find('g');
+   console.log(colorImageCointainer);
 });
