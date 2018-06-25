@@ -3,36 +3,60 @@
     "name" : "NodeJS",
     "imageName" : "nodejs.svg",
     "colorPicture" : "#8CC84B",
-    "containerFamily" : "WebDevelopment"
+    "containerFamily" : "WebDevelopment",
+    "containerRepo": "test",
+    "repoOfficiel": true,
+    "RAM_allowed_by_default": "100m",
+    "CPU_allowed_by_default": "0.5"
   },
   {
     "name": "Ubuntu",
     "imageName": "ubuntu.svg",
     "colorPicture": "#DD4814",
-    "containerFamily" : "OS"
+    "containerFamily" : "OS",
+    "containerRepo": "test",
+    "repoOfficiel": true,
+    "RAM_allowed_by_default": "100m",
+    "CPU_allowed_by_default": "0.5"
   },
   {
     "name" : "Cloudant",
     "imageName" : "cloudant.svg",
     "colorPicture": "rgb(13,45,114)",
-    "containerFamily": "Databases"
+    "containerFamily": "Databases",
+    "containerRepo": "test",
+    "repoOfficiel": true,
+    "RAM_allowed_by_default": "100m",
+    "CPU_allowed_by_default": "0.5"
   },
   {
     "name" : "PostgreSQL",
     "imageName" : "postgresql.svg",
     "colorPicture" : "#336791",
-    "containerFamily" : "Databases"
+    "containerFamily" : "Databases",
+    "containerRepo": "test",
+    "repoOfficiel": true,
+    "RAM_allowed_by_default": "100m",
+    "CPU_allowed_by_default": "0.5"
   },
   {
     "name" : "PHP",
     "imageName" : "php.svg",
     "colorPicture" : "rgb(35,37,48)",
-    "containerFamily" : "WebDevelopment"
+    "containerFamily" : "WebDevelopment",
+    "containerRepo": "test",
+    "repoOfficiel": true,
+    "RAM_allowed_by_default": "100m",
+    "CPU_allowed_by_default": "0.5"
   },
   {
     "name" : "Java",
     "imageName" : "java.svg",
     "colorPicture" : "rgb(216,117,44)",
-    "containerFamily" : "WebDevelopment"
+    "containerFamily" : "WebDevelopment",
+    "containerRepo": "test",
+    "repoOfficiel": true,
+    "RAM_allowed_by_default": "100m",
+    "CPU_allowed_by_default": "0.5"
   }
 ]

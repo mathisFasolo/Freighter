@@ -1,5 +1,7 @@
 const {exec} = require('child_process');
 let fs = require('fs');
+let catalog = require('./catalog/catalog.js');
+let systemMenagement = require('./system/systemManagement.js');
 
 //Build une image docker depuis un dockerfile
 //@param
