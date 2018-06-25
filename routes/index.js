@@ -119,22 +119,22 @@ router
         containerManagement;
         //res.render('catalogue', {"chooseAContainer" : true, "listContainers" : arrayCatalog});
     })
-    .get('/container/stopContainer', function (req, res, next)
+    .get('/container/stopContainer/:name', function (req, res, next)
     {
         console.log("container stopped !");
-        // TODO  appel fonction container
+        containerManagement.pauseContainer(req.params.name);
         res.send(true);
     })
-    .get('/container/startContainer', function (req, res, next)
+    .get('/container/startContainer/:name', function (req, res, next)
     {
         console.log("container started !");
-        // TODO appel fonction container
+        containerManagement.unpauseContainer(req.params.name);
         res.send(true);
     })
-    .get('/container/restartContainer', function (req, res, next)
+    .get('/container/restartContainer/:name', function (req, res, next)
     {
         console.log("container restarted !");
-        // TODO appel fonction container
+        containerManagement.restart(req.params.name);
         res.send(true);
     });
 
