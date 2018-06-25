@@ -4,10 +4,11 @@ let catalogue = require('../catalog/catalog.js');
 let util = require('../util.js');
 let errorLogger = require('../error.js');
 
-//Build une image docker depuis un dockerfile
-//@param
-//dockerType : type d'image voulu (ex : nodejs, mongodb)
-//name : nom à attribuer à l'image
+/**
+ * Build une image docker depuis un dockerfile
+ * @param containerType
+ * @returns {Promise<any>}
+ */
 function createDockerImage(containerType)
 {
     return new Promise(function (resolve, reject)
@@ -20,7 +21,7 @@ function createDockerImage(containerType)
         }
         let catalog = catalogue.getCatalog();
         let i = 0;
-        while (catalog.length > i && containerType != catalog[i].type) {
+        while (catalog.length > i && containerType !== catalog[i].type) {
             i++
         }
         if (i === catalog.length)
@@ -45,10 +46,12 @@ function createDockerImage(containerType)
 }
 
 
-//Création d'un volume virtuelle
-//@param
-//dockerType : type d'image voulu (ex : nodejs, mongodb)
-//name : nom du volume (même nom que l'image correspondante)
+/**
+ * Création d'un volume virtuelle
+ * @param containerType
+ * @param containerName
+ * @returns {Promise<any>}
+ */
 function createVolume (containerType, containerName)
 {
     return new Promise(function (resolve, reject)
@@ -61,7 +64,7 @@ function createVolume (containerType, containerName)
         }
         let catalog = catalogue.getCatalog();
         let i = 0;
-        while (catalog.length > i && containerType != catalog[i].type) {
+        while (catalog.length > i && containerType !== catalog[i].type) {
             i++
         }
         if (i === catalog.length) {
@@ -86,10 +89,14 @@ function createVolume (containerType, containerName)
 }
 
 
-//Lance un container de l'image passé en paramètre et monte le volume correspondant
-//@param
-//dockerType : type d'image voulu (ex : nodejs, mongodb)
-//name : nom de l'image
+/**
+ * Lance un container de l'image passé en paramètre et monte le volume correspondant
+ * @param containerType
+ * @param containerName
+ * @param cpu
+ * @param ram
+ * @returns {Promise<any>}
+ */
 function startContainer(containerType, containerName, cpu, ram)
 {
     return new Promise(function (resolve, reject)
@@ -99,7 +106,6 @@ function startContainer(containerType, containerName, cpu, ram)
         let cpuLimitation;
         let ramLimitation;
         let port;
-        let arrayPortLength = Object.keys(config.portList).length;
         console.log(catalog);
         if (containerName === "" || containerName === undefined) {
             console.log("their is no name field");
@@ -132,17 +138,15 @@ function startContainer(containerType, containerName, cpu, ram)
             ramLimitation = ram;
         }
         let p = 0;
-        console.log('test');
-        console.log("portlist length "+config.portList[p]);
-        while (arrayPortLength > p && config.portList[p]===true) {
+        while (config.portList.length > p && config.portList[p]==false) {
             p++;
         }
-        if (p === arrayPortLength) {
+        if (p === config.portList.length) {
             reject({err: 20, msg: "No more port to expose"});
         } else {
             port = 46000 + p;
         }
-        exec("docker run --name " + containerName + " -m " + ramLimitation + " --cpus=" + cpuLimitation + " -p " + port + ":8080 --expose=8080 --mount source=" + containerName+ ",target=/home  " + containerType, (err, stdout, stderr) => {
+        exec("docker run --name " + containerName + " -m " + ramLimitation + " --cpus=" + cpuLimitation + " -p 127.0.0.1:" + port + ":5432 --mount source=" + containerName+ ",target=/home  " + containerType, (err, stdout, stderr) => {
             if (err) {
                 console.log(err);
                 reject({err: 2, msg: "Failed to start container"});
@@ -206,9 +210,11 @@ module.exports.deployContainer = async function (typeContainer, nameContainer, c
         });
 };
 
-//met un docker existant en pause
-//@param
-//name : nom du container à mettre en pause
+/**
+ * met un docker existant en pause
+ * @param nameContainer
+ * @returns {Promise<*>}
+ */
 module.exports.pauseContainer = async function (nameContainer) {
     let config = getSystemConfig();
     if (nameContainer === "" || typeof nameContainer === undefined) {
@@ -240,9 +246,11 @@ module.exports.pauseContainer = async function (nameContainer) {
     })
 };
 
-//relance un container mis en pause
-//@param
-//name : nom du container
+/**
+ * relance un container mis en pause
+ * @param req
+ * @returns {Promise<*>}
+ */
 async function unpauseContainer(req) {
     if (req.name === "" || typeof req.name === undefined) {
         console.log("their is no name field");
@@ -271,9 +279,11 @@ async function unpauseContainer(req) {
     })
 }
 
-//kill les process d'un container
-//@param
-//name : nom de container à kill
+/**
+ * kill les process d'un container
+ * @param req
+ * @returns {Promise<*>}
+ */
 async function killContainer(req) {
     if (req.name === "" || typeof req.name === undefined) {
         console.log("their is no name field");
@@ -302,9 +312,11 @@ async function killContainer(req) {
     })
 }
 
-//restart un container kill ou planté
-//@param
-//name : nom du container à relancer
+/**
+ * restart un container kill ou planté
+ * @param req
+ * @returns {Promise<*>}
+ */
 async function restartContainer(req) {
     if (req.name === "" || typeof req.name === undefined) {
         console.log("their is no name field");
@@ -333,9 +345,11 @@ async function restartContainer(req) {
     })
 }
 
-//Supprime le container, son image et le volume associé
-//@param
-//name: nom du container à supprimer
+/**
+ * Supprime le container, son image et le volume associé
+ * @param req
+ * @returns {Promise<*>}
+ */
 async function deleteContainer(req) {
     if (req.name === "" || typeof req.name === undefined) {
         console.log("their is no name field");
