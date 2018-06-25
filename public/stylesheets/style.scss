@@ -483,3 +483,22 @@ h2
 {
   margin-bottom: 4%;
 }
+
+.containerName
+{
+  text-transform: capitalize;
+}
+
+.typeRepo
+{
+  font-style : italic;
+  font-size: 12pt;
+  font-weight: 200;
+  color: $logoColor;
+}
+
+.ramCatalog, .cpuCatalog
+{
+  font-size: 10pt;
+  font-weight: lighter;
+}

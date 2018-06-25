@@ -278,4 +278,17 @@ h2 {
 .containerFamily {
   margin-bottom: 4%; }
 
+.containerName {
+  text-transform: capitalize; }
+
+.typeRepo {
+  font-style: italic;
+  font-size: 12pt;
+  font-weight: 200;
+  color: #EF5822; }
+
+.ramCatalog, .cpuCatalog {
+  font-size: 10pt;
+  font-weight: lighter; }
+
 /*# sourceMappingURL=style.css.map */

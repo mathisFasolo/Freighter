@@ -2,5 +2,13 @@ div.col-4.containerCatalog.d-flex.flex-row
     div.col-4.imgContainer(style="background-color:" + container.colorPicture)
         object.containerImage(data="./images/containerImages/" + container.imageName, width="100", height= "100", type="image/svg+xml")
             img.img-fluid(src="./images/containerImages/" + container.imageName, alt=container.imageName, draggable=false)
-    div.col-8.containerInfo.d-flex.flex-row
-        div.containerName=container.name
+    div.col-8.containerInfo
+        div.col-12.containerName=container.type
+        if(container.repoOfficiel)
+            div.col-12.typeRepo (Officiel)
+        else
+            div.col-12.typeRepo (Communauté)
+        div.systemRequirement
+
+            span.col-12.ramCatalog RAM : #{container.RAM_allowed_by_default} (octet)
+            span.col-12.cpuCatalog CPU : #{container.CPU_allowed_by_default} (%)

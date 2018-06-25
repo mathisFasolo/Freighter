@@ -51,7 +51,7 @@ router
     .get('/catalog', function (req, res, next)
     {
         let pageTitle = "Catalog";
-        let arrayCatalog = JSON.parse(catalog.getCatalog());
+        let arrayCatalog = catalog.getCatalog();
         res.render('catalog',{pageTitle: pageTitle, arrayContainerCatalog: arrayCatalog});
     })
     .get('/repeatManager/cpu', function (req, res, next)
@@ -112,8 +112,8 @@ router
             {
                 nameContainer: "Ubuntu"
             }];
-        let containerType = "nodejs";
-        let containerName = "test1";
+        let containerType = "test";
+        let containerName = "Jeuj3";
         containerManagement.deployContainer(containerType, containerName);
         // TODO get catalog page
         containerManagement;

@@ -99,6 +99,7 @@ function startContainer(containerType, containerName, cpu, ram)
         let cpuLimitation;
         let ramLimitation;
         let port;
+        let arrayPortLength = Object.keys(config.portList).length;
         console.log(catalog);
         if (containerName === "" || containerName === undefined) {
             console.log("their is no name field");
@@ -131,15 +132,17 @@ function startContainer(containerType, containerName, cpu, ram)
             ramLimitation = ram;
         }
         let p = 0;
-        while (config.portList.lenght > p && !config.portList[p]) {
+        console.log('test');
+        console.log("portlist length "+config.portList[p]);
+        while (arrayPortLength > p && config.portList[p]===true) {
             p++;
         }
-        if (p === config.portList.lenght) {
+        if (p === arrayPortLength) {
             reject({err: 20, msg: "No more port to expose"});
         } else {
             port = 46000 + p;
         }
-        exec("docker run --name " + containerName + " -m " + ramLimitation + " --cpus=" + cpuLimitation + " -p 127.0.0.1:" + port + ":5432 --mount source=" + containerName+ ",target=/home  " + containerType, (err, stdout, stderr) => {
+        exec("docker run --name " + containerName + " -m " + ramLimitation + " --cpus=" + cpuLimitation + " -p " + port + ":8080 --expose=8080 --mount source=" + containerName+ ",target=/home  " + containerType, (err, stdout, stderr) => {
             if (err) {
                 console.log(err);
                 reject({err: 2, msg: "Failed to start container"});
