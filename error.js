@@ -9,5 +9,5 @@ const pathToFileError = "./error.txt";
 module.exports.logError = function (error)
 {
     let errorLine = "- append on : " + new Date + " error logged : " + error + "\n";
-    fs.writeFileSync(pathToFileError, errorLine);
+    fs.appendFileSync(pathToFileError, errorLine);
 };

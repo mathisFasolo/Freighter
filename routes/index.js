@@ -10,6 +10,7 @@ let sysManager = require("../system/systemRessourceManagement");
 let monitoringChart =  require("../visual/monitoringCharts");
 let util = require("../util.js");
 let catalog = require("../catalog/catalog");
+let containerManagement = require('../manageContainer/container.js');
 
 router
     .get('/', function(req, res, next)
@@ -34,7 +35,8 @@ router
                 isStarted: true,
                 infoTextApp: "Lorem Ipsum Doloris ..."
             };
-        let arrayContainers = [cryptoPoly, cryptoPoly, cryptoPoly];
+        //let arrayContainers = [cryptoPoly, cryptoPoly, cryptoPoly];
+        let arrayContainers = containerManagement.getContainerInstalled();
         Promise.all([CPU, RAM_USED, RAM_SYS])
             .then(function(values)
             {
@@ -105,11 +107,16 @@ router
     })
     .get('/container/addNewContainer/', function (req, res, next)
     {
+        console.log(util.generateRandomID());
         let arrayCatalog = [
             {
                 nameContainer: "Ubuntu"
             }];
+        let containerType = "nodejs";
+        let containerName = "test1";
+        containerManagement.deployContainer(containerType, containerName);
         // TODO get catalog page
+        containerManagement;
         //res.render('catalogue', {"chooseAContainer" : true, "listContainers" : arrayCatalog});
     })
     .get('/container/stopContainer', function (req, res, next)

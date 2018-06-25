@@ -11,5 +11,5 @@ module.exports.getCatalog = function ()
 {
     const pathToCatalogData = "./catalog/catalogData.json";
     let json = fs.readFileSync(pathToCatalogData);
-    return json;
+    return JSON.parse(json);
 };

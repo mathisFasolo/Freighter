@@ -1,0 +1,1 @@
+FROM ibmcom/cloudant-developer
