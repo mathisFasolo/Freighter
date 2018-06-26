@@ -4,13 +4,14 @@
  */
 
 let express = require('express');
+const path = require('path');
 let router = express.Router();
 let os = require("os");
-let sysManager = require("../system/systemRessourceManagement");
-let monitoringChart =  require("../visual/monitoringCharts");
-let util = require("../util.js");
-let catalog = require("../catalog/catalog");
-let containerManagement = require('../manageContainer/container.js');
+let sysManager = require(path.join(__dirname,"../system/systemRessourceManagement"));
+let monitoringChart =  require(path.join(__dirname,"../visual/monitoringCharts"));
+let util = require(path.join(__dirname,"../util.js"));
+let catalog = require(path.join(__dirname,"../catalog/catalog"));
+let containerManagement = require(path.join(__dirname,'../manageContainer/container.js'));
 
 router
     .get('/', function(req, res, next)
@@ -96,7 +97,7 @@ router
             {
                 id: util.generateRandomID(),
                 nameApp: "CryptoPoly",
-                typeApp: "NodeJS",
+                typeApp: "nodejs",
                 isStarted: true,
                 infoTextApp: "Lorem Ipsum Doloris ...",
                 url: "www.google.com",

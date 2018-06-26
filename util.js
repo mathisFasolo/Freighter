@@ -1,4 +1,4 @@
-module.exports.generateRandomID = function ()
-{
-  return Math.random().toString(36).substr(2, 9);
+module.exports.generateRandomID = function () {
+    return Math.random().toString(36).substr(2, 9);
 };
+
