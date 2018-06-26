@@ -107,7 +107,7 @@ router
     })
     .get('/container/addNewContainer/', function (req, res, next)
     {
-        console.log(util.generateRandomID());
+        /*console.log(util.generateRandomID());
         let arrayCatalog = [
             {
                 nameContainer: "Ubuntu"
@@ -116,8 +116,24 @@ router
         let containerName = "Jeuj3";
         containerManagement.deployContainer(containerType, containerName);
         // TODO get catalog page
-        containerManagement;
-        //res.render('catalogue', {"chooseAContainer" : true, "listContainers" : arrayCatalog});
+        containerManagement;*/
+        let pageTitle = "Choose your environment type";
+        let arrayCatalog = catalog.getCatalog();
+        res.render('catalog',{pageTitle: pageTitle, arrayContainerCatalog: arrayCatalog});
+    })
+    .get('/container/addNewContainer/create/:name', function (req, res, next)
+    {
+        let containerType = req.params.name;
+        let containerName = "COUCOU";
+        containerManagement.deployContainer(containerType, containerName)
+            .then(function (res)
+            {
+                res.send(res);
+            })
+            .catch(function (err)
+            {
+                res.status(500).send(err)
+            });
     })
     .get('/container/stopContainer', function (req, res, next)
     {

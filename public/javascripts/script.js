@@ -30,6 +30,22 @@ function displayErrors (error)
     let notificationsCounter = $("#zoneError").children().length;
     $("#notificationBadge").text(notificationsCounter).show();
 }
+function displaySucess (sucess)
+{
+    // on fixe la limite de la fenetre a 5 element pour pas que le les erreurs décalent toute la page
+    if($("#zoneError").children().length + 1 > 4)
+    {
+        $("#zoneError").css({"overflow-y": "scroll", "height" : "350px"});
+    }
+    // on crée une notification
+    $("#zoneError").append(
+        "<div class='alert-success alert-dismissible alert fade show' role='alert'>" +
+        "<button class='close' type='button' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
+        "<span class='notificationMessage'>"+sucess+"</span>" +
+        "</div>");
+    let notificationsCounter = $("#zoneError").children().length;
+    $("#notificationBadge").text(notificationsCounter).show();
+}
 
 /************************************/
 // Fonctions AJAX exécutées durant la vie de la page
@@ -107,7 +123,7 @@ $("#notification_off")
 
 $("#addNewContainer").click(function ()
 {
-    document.location.href="/addNewContainer/";
+    document.location.href="/container/addNewContainer/";
 });
 
 /*$(".envContainer").click(function ()
@@ -186,10 +202,18 @@ $(".restart").click(function()
 });
 
 /************************************/
-// Travaille l'esthétisme
+//
 
-$(function ()
+$("#test").click(function ()
 {
-   let colorImageCointainer = $(".imageContainer").find('.containerImage').find('g');
-   console.log(colorImageCointainer);
+    $.ajax({url: "/container/addNewContainer/create/"+$(this).attr("id"), type: "GET",
+        success: function (result)
+        {
+            document.location.href = "/dashboard";
+            displaySucess(result.msg);
+        }, error: function (err)
+        {
+            console.log(err);
+            displayErrors(err.responseText);
+        }});
 });
