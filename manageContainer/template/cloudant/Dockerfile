@@ -1,1 +1,1 @@
-FROM ibmcom/cloudant-developer
+FROM ibmcom/cloudant-developer:latest
