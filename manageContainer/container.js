@@ -176,37 +176,34 @@ function startContainer(containerType, containerName, cpu, ram)
  * @param ram (optionnel)
  * @returns {Promise<*>}
  */
-module.exports.deployContainer = function (typeContainer, nameContainer, cpu, ram)
+module.exports.deployContainer = async function (typeContainer, nameContainer, cpu, ram)
 {
-    return new Promise(function (resolve, reject)
-    {
-        createDockerImage(typeContainer)
-            .then(function (res)
-            {
-                console.log(res);
-                createVolume(typeContainer, nameContainer)
-                    .then(function ()
-                    {
-                        startContainer(typeContainer, nameContainer, cpu, ram)
-                            .then(function ()
-                            {
-                                resolve({"err": "0", "msg": "Container succefully created and started"});
-                            })
-                            .catch(function (err)
-                            {
-                                reject(err);
-                            });
-                    })
-                    .catch(function (err)
-                    {
-                        reject(err);
-                    });
-            })
-            .catch(function (err)
-            {
-                reject(err);
-            });
-    });
+    createDockerImage(typeContainer)
+        .then(function (res)
+        {
+            console.log(res);
+            createVolume(typeContainer, nameContainer)
+                .then(function (res)
+                {
+                    startContainer(typeContainer, nameContainer, cpu, ram)
+                        .then(function ()
+                        {
+                            return {"err": "0", "msg": "Container succefully created and started"}
+                        })
+                        .catch(function (err)
+                        {
+                            return err;
+                        });
+                })
+                .catch(function (err)
+                {
+                    return err;
+                });
+        })
+        .catch(function (err)
+        {
+            return err;
+        });
 };
 
 //met un docker existant en pause
