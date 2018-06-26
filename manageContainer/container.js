@@ -188,6 +188,10 @@ module.exports.deployContainer = async function (typeContainer, nameContainer, c
         });
 };
 
+/**
+ *
+ * @param nameContainer
+ */
 module.exports.restart=function(nameContainer){
     this.pauseContainer(nameContainer).then(function(res){
         console.log(res);
