@@ -20,5 +20,18 @@ block content
                 each container in arrayContainerCatalog
                     if container.containerFamily === 'OS'
                         include catalogContainer
-
-
+    if(chooseAContainer)
+        div.modal.fade#addAContainerName(tabindex="-1", role="dialog", aria-labelledby="addAContainerName", aria-hidden="true")
+            div.modal-dialog(role="document")
+                div.modal-content
+                    div.modal-header
+                        h5.modal-title#exampleModalLabel New message
+                        button(type="button", class="close", data-dismiss="modal", aria-label="Close")
+                            span(aria-hidden="true") &times;
+                div.modal-body
+                    form
+                        div.form-group
+                            label.col-form-label(for="container-name")  Recipient:
+                            input#container-name.form-control(type="text")
+                div.modal-footer
+                    button(type="button", class="btn btn-secondary", data-dismiss="modal") Close

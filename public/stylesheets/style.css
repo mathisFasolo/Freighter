@@ -262,6 +262,7 @@ h2 {
   border: 3px solid #15214E;
   border-radius: 3px;
   padding-left: 0;
+  padding-right: 0;
   margin-right: 1%; }
   .containerCatalog .imgContainer {
     padding-top: 3%; }
@@ -290,5 +291,20 @@ h2 {
 .ramCatalog, .cpuCatalog {
   font-size: 10pt;
   font-weight: lighter; }
+
+.chooseAContainer {
+  font-size: 10pt;
+  background-color: #880e4f;
+  color: white;
+  border: 2px solid #880e4f;
+  border-radius: 3px;
+  cursor: pointer; }
+
+.chooseAContainer:hover {
+  background-color: #bc477b;
+  border: 2px solid #bc477b; }
+
+hr {
+  border-top: 1px solid #15214E; }
 
 /*# sourceMappingURL=style.css.map */

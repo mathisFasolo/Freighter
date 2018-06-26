@@ -119,7 +119,7 @@ router
         containerManagement;*/
         let pageTitle = "Choose your environment type";
         let arrayCatalog = catalog.getCatalog();
-        res.render('catalog',{pageTitle: pageTitle, arrayContainerCatalog: arrayCatalog});
+        res.render('catalog',{pageTitle: pageTitle, arrayContainerCatalog: arrayCatalog, chooseAContainer: true});
     })
     .get('/container/addNewContainer/create/:name', function (req, res, next)
     {
