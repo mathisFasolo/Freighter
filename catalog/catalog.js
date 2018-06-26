@@ -5,11 +5,12 @@
 
 
 let fs = require('fs');
+let path = require('path');
 
 
 module.exports.getCatalog = function ()
 {
-    const pathToCatalogData = "./catalog/catalogData.json";
+    const pathToCatalogData = path.join(__dirname,"catalogData.json");
     let json = fs.readFileSync(pathToCatalogData);
     return JSON.parse(json);
 };

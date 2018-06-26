@@ -19,11 +19,11 @@
     "CPU_allowed_by_default": "1"
   },
   {
-    "type": "Ubuntu",
+    "type": "ubuntu",
     "imageName": "ubuntu.svg",
     "colorPicture": "#DD4814",
     "containerFamily" : "OS",
-    "containerRepo": "test",
+    "containerRepo": "ubuntu",
     "repoOfficiel": true,
     "RAM_allowed_by_default": "100m",
     "CPU_allowed_by_default": "0.5"
@@ -33,7 +33,7 @@
     "imageName" : "cloudant.svg",
     "colorPicture": "rgb(13,45,114)",
     "containerFamily": "Databases",
-    "containerRepo": "test",
+    "containerRepo": "cloudant",
     "repoOfficiel": true,
     "RAM_allowed_by_default": "100m",
     "CPU_allowed_by_default": "0.5"
@@ -43,7 +43,7 @@
     "imageName" : "postgresql.svg",
     "colorPicture" : "#336791",
     "containerFamily" : "Databases",
-    "containerRepo": "test",
+    "containerRepo": "postgres",
     "repoOfficiel": true,
     "RAM_allowed_by_default": "100m",
     "CPU_allowed_by_default": "0.5"
@@ -53,7 +53,7 @@
     "imageName" : "php.svg",
     "colorPicture" : "rgb(35,37,48)",
     "containerFamily" : "WebDevelopment",
-    "containerRepo": "test",
+    "containerRepo": "php",
     "repoOfficiel": true,
     "RAM_allowed_by_default": "100m",
     "CPU_allowed_by_default": "0.5"
@@ -63,7 +63,7 @@
     "imageName" : "java.svg",
     "colorPicture" : "rgb(216,117,44)",
     "containerFamily" : "WebDevelopment",
-    "containerRepo": "test",
+    "containerRepo": "java",
     "repoOfficiel": true,
     "RAM_allowed_by_default": "100m",
     "CPU_allowed_by_default": "0.5"

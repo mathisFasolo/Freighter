@@ -3,6 +3,7 @@ let fs = require('fs');
 let catalogue = require('../catalog/catalog.js');
 let util = require('../util.js');
 let errorLogger = require('../error.js');
+let path = require('path');
 
 //Build une image docker depuis un dockerfile
 //@param
@@ -23,7 +24,7 @@ function createDockerImage(containerType) {
         if (i === catalog.length) {
             reject({err: 1, msg: "DockerType not existing into catalog"});
         }
-        exec("docker build /Users/mathisfasolo/WebstormProjects/Freighter/manageContainer/template/" + containerType + " -t " + containerType, (err, stdout, stderr) => {
+        exec("docker build "+path.join(__dirname,'template/') +""+ containerType + " -t " + containerType, (err, stdout, stderr) => {
             if (err) {
                 console.log(err);
                 errorLogger.logError("unable to create docker image : " + err);
@@ -395,12 +396,12 @@ async function deleteContainer(req) {
 
 
 function getSystemConfig() {
-    return JSON.parse(fs.readFileSync("./system/containerConfig.json", 'utf8'));
+    return JSON.parse(fs.readFileSync(path.join(__dirname,"system/containerConfig.json"), 'utf8'));
 }
 
 function putConfig(config) {
     let json = JSON.stringify(config);
-    fs.writeFile('./system/containerConfig.json', json, 'utf8', (err, data) => {
+    fs.writeFile(path.join(__dirname,'./system/containerConfig.json'), json, 'utf8', (err, data) => {
         if (err) {
             console.log(err);
             errorLogger.logError("unable to write in containerConfig file : " + err);
@@ -412,7 +413,7 @@ function putConfig(config) {
 }
 
 module.exports.getContainerInstalled = function () {
-    const pathToContainerList = "../system/containerConfig.json";
+    const pathToContainerList = path.join(__dirname,"../system/containerConfig.json");
     let json = require(pathToContainerList);
     return json.containersList;
 };
