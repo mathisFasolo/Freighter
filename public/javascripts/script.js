@@ -126,11 +126,6 @@ $("#addNewContainer").click(function ()
     document.location.href="/container/addNewContainer/";
 });
 
-/*$(".envContainer").click(function ()
-{
-    //document.location.href="/viewContainer/"+$(this).attr("value");
-    displayErrors(["problème"]);
-});*/
 
 /**
  * Cette fonction lance l'annimation au clic sur le container
@@ -188,32 +183,74 @@ function toggleRunContainer(queryThis, boutonClick)
 
 $(".stop").click(function ()
 {
-   toggleRunContainer($(this), "STOP");
+    // animation
+    toggleRunContainer($(this), "STOP");
+   // appel ajax
+    let containerName = $(this).attr("value");
+    $.ajax({url:"/container/stopContainer/"+containerName, type: "GET", success: function (data)
+        {
+            console.log(data);
+            displaySucess(data.responseJSON.msg);
+            toggleRunContainer($(this), "START");
+
+        }, error : function(err)
+        {
+            console.log(err);
+            displayErrors(err.responseJSON.msg);
+            toggleRunContainer($(this), "STOP");
+        }})
+
+
 });
 
 $(".start").click(function ()
 {
+    // animation
     toggleRunContainer($(this), "START");
+    // appel ajax
+    let containerName = $(this).attr("value");
+    $.ajax({url:"/container/startContainer/"+containerName, type: "GET", success: function (data)
+        {
+            console.log(data);
+            displaySucess(data.responseJSON.msg);
+            toggleRunContainer($(this), "STOP");
+
+        }, error : function(err)
+        {
+            console.log(err);
+            displayErrors(err.responseJSON.msg);
+            toggleRunContainer($(this), "START");
+        }})
 });
 
 $(".restart").click(function()
 {
+    // animation
     toggleRunContainer($(this), "RESTART");
+    // appel ajax
+    $.ajax({url:"/container/restartContainer/"+containerName, type: "GET", success: function (data)
+        {
+            displaySucess(data.responseJSON.msg);
+            toggleRunContainer($(this), "START");
+
+        }, error : function(err)
+        {
+            displayErrors(err.responseJSON.msg);
+            toggleRunContainer($(this), "START");
+        }})
 });
 
 /************************************/
 //
 
-$("#test").click(function ()
+
+$(".chooseAContainer").click(function ()
 {
-    $.ajax({url: "/container/addNewContainer/create/"+$(this).attr("id"), type: "GET",
-        success: function (result)
-        {
-            document.location.href = "/dashboard";
-            displaySucess(result.msg);
-        }, error: function (err)
-        {
-            console.log(err);
-            displayErrors(err.responseText);
-        }});
+   $("#container-type").val($(this).attr("id"));
+});
+
+$('#addAContainerName').on('shown.bs.modal', function ()
+{
+    $('#container-name').trigger('focus');
+
 });

@@ -129,6 +129,11 @@ nav.col-2
       a
       {
         text-decoration: none;
+        color: white
+      }
+      a:hover
+      {
+        color: $logoColor;
       }
     }
   }
@@ -335,8 +340,16 @@ h2
 
 .alert-danger
 {
-  color: $colorDangerMain;
-  background-color: rgba($colorDangerSecond, 0.5);
+  color: white;
+  background-color: $colorDangerMain;
+  border-color: transparent;
+  border-radius: $borderRadius;
+}
+
+.alert-success
+{
+  color: white;
+  background-color: $main;
   border-color: transparent;
   border-radius: $borderRadius;
 }
@@ -523,4 +536,18 @@ h2
 hr
 {
   border-top: 1px solid $main;
+}
+
+.chooseAName
+{
+  background-color: white;
+  border: 4px solid $main;
+  border-radius: $borderRadius;
+}
+
+.modal-title
+{
+  color: $main;
+  font-family : 'IBM Plex Sans', 'Arial', SansSerif;
+  font-weight: bold;
 }

@@ -22,16 +22,14 @@ block content
                         include catalogContainer
     if(chooseAContainer)
         div.modal.fade#addAContainerName(tabindex="-1", role="dialog", aria-labelledby="addAContainerName", aria-hidden="true")
-            div.modal-dialog(role="document")
+            div.modal-dialog.chooseAName(role="document")
                 div.modal-content
                     div.modal-header
-                        h5.modal-title#exampleModalLabel New message
+                        h5.modal-title#exampleModalLabel Name your environment :
                         button(type="button", class="close", data-dismiss="modal", aria-label="Close")
                             span(aria-hidden="true") &times;
                 div.modal-body
-                    form
+                    form(action='/container/addNewContainer/create', method='post')
                         div.form-group
-                            label.col-form-label(for="container-name")  Recipient:
-                            input#container-name.form-control(type="text")
-                div.modal-footer
-                    button(type="button", class="btn btn-secondary", data-dismiss="modal") Close
+                            input#container-name.form-control(type="text", name="containerName", placeholder="CryptoPoly", required)
+                            input#container-type.form-control(type="hidden", name="containerType")

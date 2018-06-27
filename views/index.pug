@@ -33,30 +33,32 @@ block content
                                 span.notificationMessage Mode developpeur activé, les erreurs du systemes et rencontrées par l'application s'afficheront ici
                     div#myFreight.row
                         h2.col-12 My Freight :
-                        - var i = 0
-                        while i < arrayContainer.length
-                            div.envContainer.col-3.container-fluid(value=arrayContainer[i].id)
-                                    div.container
-                                        span.row.environnementName= arrayContainer[i].nameApp
-                                        span.row.environnementType= arrayContainer[i].typeApp
-                                    if arrayContainer[i].isStarted == true
-                                        div.row
-                                            div.col-3.appStatus(title="Running")
-                                                svg.center(height="50", width="50")
-                                                    circle(cx="20", cy="20", r="15", stroke="white", stroke-width="1", fill="green")
-                                            div.col-8.MoreInfo= arrayContainer[i].infoTextApp
-                                    else
-                                        div.row
-                                            div.col-3.appStatus(title="Stopped")
-                                                svg.center(height="50", width="50")
-                                                    circle(cx="20", cy="20", r="15", stroke="white", stroke-width="1", fill="red")
-                                            div.col-8.MoreInfo= arrayContainer[i].infoTextApp
-                                    div.row.controlButton
-                                        div.toggleRun.stop.col-4(style=arrayContainer[i].isStarted ? "" : "display:none") STOP
-                                        div.otherAction.restart.col-4(style=arrayContainer[i].isStarted ? "" : "display:none") RESTART
-                                        div.toggleRun.start.col-4(style=arrayContainer[i].isStarted ? "display:none" : "") START
-                            -i++;
-                        span.col-2.newContainer
-                            button#addNewContainer.center add new container
+                        div.container
+                            div.row.justify-content-start
+                                - var i = 0
+                                while i < arrayContainer.length
+                                    div.envContainer.col-3.container-fluid(value=arrayContainer[i].id)
+                                            div.container
+                                                span.row.environnementName= arrayContainer[i].nameApp
+                                                span.row.environnementType= arrayContainer[i].type
+                                            if arrayContainer[i].isStarted == true
+                                                div.row
+                                                    div.col-3.appStatus(title="Running")
+                                                        svg.center(height="50", width="50")
+                                                            circle(cx="20", cy="20", r="15", stroke="white", stroke-width="1", fill="green")
+                                                    div.col-8.MoreInfo= arrayContainer[i].infoTextApp
+                                            else
+                                                div.row
+                                                    div.col-3.appStatus(title="Stopped")
+                                                        svg.center(height="50", width="50")
+                                                            circle(cx="20", cy="20", r="15", stroke="white", stroke-width="1", fill="red")
+                                                    div.col-8.MoreInfo= arrayContainer[i].infoTextApp
+                                            div.row.controlButton
+                                                div.toggleRun.stop.col-4(style=arrayContainer[i].isStarted ? "" : "display:none", value=arrayContainer[i].nameApp) STOP
+                                                div.otherAction.restart.col-4(style=arrayContainer[i].isStarted ? "" : "display:none", value=arrayContainer[i].nameApp) RESTART
+                                                div.toggleRun.start.col-4(style=arrayContainer[i].isStarted ? "display:none" : "", value=arrayContainer[i].nameApp) START
+                                    -i++;
+                                span.col-2.newContainer
+                                    button#addNewContainer.center add new container
 
 

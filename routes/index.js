@@ -6,7 +6,6 @@
 let express = require('express');
 const path = require('path');
 let router = express.Router();
-let os = require("os");
 let sysManager = require(path.join(__dirname,"../system/systemRessourceManagement"));
 let monitoringChart =  require(path.join(__dirname,"../visual/monitoringCharts"));
 let util = require(path.join(__dirname,"../util.js"));
@@ -16,7 +15,7 @@ let containerManagement = require(path.join(__dirname,'../manageContainer/contai
 router
     .get('/', function(req, res, next)
     {
-        // App main page : a loading page
+        // La page d'accueil : une page de chargement c'est une page esthétique
         let arrayLoading = ["Loading User Preferences", "Loading Containers", "Loading Platform Interface"];
         res.render('loading', {"arrayLoading" : arrayLoading });
     })
@@ -27,21 +26,12 @@ router
         let RAM_USED = sysManager.getRAM_USED();
         let RAM_SYS = sysManager.getRAM_SYS();
         let pageTitle = 'My Dashboard';
-        // TODO get all containers
-        let cryptoPoly =
-            {
-                id: util.generateRandomID(),
-                nameApp: "CryptoPoly",
-                typeApp: "NodeJS",
-                isStarted: true,
-                infoTextApp: "Lorem Ipsum Doloris ..."
-            };
-        //let arrayContainers = [cryptoPoly, cryptoPoly, cryptoPoly];
+        // On récupère les containers installés
         let arrayContainers = containerManagement.getContainerInstalled();
+        //  On attend les résultats des maitrics RAM et CPU pour afficher la page
         Promise.all([CPU, RAM_USED, RAM_SYS])
             .then(function(values)
             {
-                // round number at 2 decimal
                 CPU = Number(values[0]).toFixed(2);
                 RAM_USED = values[1];
                 RAM_SYS = values[2];
@@ -89,70 +79,84 @@ router
         let chart = JSON.stringify(chartJSON);
         res.send(chart);
     })
-    .get('/container/viewContainer/:idContainer', function (req,res,next)
-    {
-        let idContainer = req.params.idContainer;
-        // TODO get info container by ID
-        let cryptoPoly =
-            {
-                id: util.generateRandomID(),
-                nameApp: "CryptoPoly",
-                typeApp: "nodejs",
-                isStarted: true,
-                infoTextApp: "Lorem Ipsum Doloris ...",
-                url: "www.google.com",
-            };
-        cryptoPoly.ramUsage = 1000;
-        cryptoPoly.cpuUsage = 5;
-        res.render('exploreContainer', {"container" : cryptoPoly});
-    })
+
     .get('/container/addNewContainer/', function (req, res, next)
     {
-        /*console.log(util.generateRandomID());
-        let arrayCatalog = [
-            {
-                nameContainer: "Ubuntu"
-            }];
-        let containerType = "test";
-        let containerName = "Jeuj3";
-        containerManagement.deployContainer(containerType, containerName);
-        // TODO get catalog page
-        containerManagement;*/
         let pageTitle = "Choose your environment type";
         let arrayCatalog = catalog.getCatalog();
         res.render('catalog',{pageTitle: pageTitle, arrayContainerCatalog: arrayCatalog, chooseAContainer: true});
     })
-    .get('/container/addNewContainer/create/:name', function (req, res, next)
+    .post('/container/addNewContainer/create', function (req, res, next)
     {
-        let containerType = req.params.name;
-        let containerName = "COUCOU";
+        let containerType = req.body.containerType;
+        let containerName = req.body.containerName;
         containerManagement.deployContainer(containerType, containerName)
-            .then(function (res)
+            .then(function (data)
             {
-                res.send(res);
+                //res.send(res);
+                let arrayContainers = containerManagement.getContainerInstalled();
+                let pageTitle = 'My Dashboard';
+                let CPU = sysManager.getCPU_USAGE();
+                let RAM_USED = sysManager.getRAM_USED();
+                let RAM_SYS = sysManager.getRAM_SYS();
+                Promise.all([CPU, RAM_USED, RAM_SYS])
+                    .then(function(values)
+                    {
+                        CPU = Number(values[0]).toFixed(2);
+                        RAM_USED = values[1];
+                        RAM_SYS = values[2];
+                        res.render('index', {"CPU_USAGE" : CPU,"RAM_USAGE" : RAM_USED, "RAM_SYS" : RAM_SYS, "arrayContainer" : arrayContainers, pageTitle : pageTitle});
+                    });
             })
             .catch(function (err)
             {
-                res.status(500).send(err)
+                console.log(err);
+                //res.status(500).send(err)
             });
+
     })
     .get('/container/stopContainer/:name', function (req, res, next)
     {
         console.log("container stopped !");
-        containerManagement.pauseContainer(req.params.name);
-        res.send(true);
+        containerManagement.pauseContainer(req.params.name)
+            .then(function (data)
+            {
+                res.send(data);
+            })
+            .catch(function (err)
+            {
+                console.log(err);
+                res.status(500).send(err);
+            });
+
     })
     .get('/container/startContainer/:name', function (req, res, next)
     {
         console.log("container started !");
-        containerManagement.unpauseContainer(req.params.name);
-        res.send(true);
+        containerManagement.unpauseContainer(req.params.name)
+            .then(function (data)
+            {
+                res.send(data);
+            })
+            .catch(function (err)
+            {
+                console.log(err);
+                res.status(500).send(err);
+            });
     })
     .get('/container/restartContainer/:name', function (req, res, next)
     {
         console.log("container restarted !");
-        containerManagement.restart(req.params.name);
-        res.send(true);
+        containerManagement.restart(req.params.name)
+            .then(function (data)
+            {
+                res.send(data);
+            })
+            .catch(function (err)
+            {
+                console.log(err);
+                res.status(500).send(err);
+            });
     });
 
 module.exports = router;

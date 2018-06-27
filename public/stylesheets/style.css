@@ -59,7 +59,10 @@ nav.col-2 {
       border-radius: 3px;
       box-shadow: -1px 2px 20px rgba(113, 115, 169, 0.3) inset; }
       nav.col-2 ul li a {
-        text-decoration: none; }
+        text-decoration: none;
+        color: white; }
+      nav.col-2 ul li a:hover {
+        color: #EF5822; }
 
 body.container-fluid {
   padding: 0;
@@ -178,8 +181,14 @@ h2 {
   border-radius: 3px; }
 
 .alert-danger {
-  color: #880e4f;
-  background-color: rgba(188, 71, 123, 0.5);
+  color: white;
+  background-color: #880e4f;
+  border-color: transparent;
+  border-radius: 3px; }
+
+.alert-success {
+  color: white;
+  background-color: #15214E;
   border-color: transparent;
   border-radius: 3px; }
 
@@ -306,5 +315,15 @@ h2 {
 
 hr {
   border-top: 1px solid #15214E; }
+
+.chooseAName {
+  background-color: white;
+  border: 4px solid #15214E;
+  border-radius: 3px; }
+
+.modal-title {
+  color: #15214E;
+  font-family: 'IBM Plex Sans', 'Arial', SansSerif;
+  font-weight: bold; }
 
 /*# sourceMappingURL=style.css.map */

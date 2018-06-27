@@ -1,14 +1,27 @@
+/**
+ * container.js contient les informations utile à la gestion des containers docker
+ * (pull d'image, creation de container et de volume virtuel, enregistrement dans la base de donnée de l'app ...)
+ * @author [ Alexis Jolin, Etienne Platini, Mathis Fasolo ]
+ */
+
+// permet d'executer une commande système depuis nodejs
 const {exec} = require('child_process');
+// le module de gestion de fichier sous node js
 let fs = require('fs');
+// ce module gére les chemins dans l'application
+let path = require('path');
 let catalogue = require('../catalog/catalog.js');
 let util = require('../util.js');
 let errorLogger = require('../error.js');
-let path = require('path');
 
-//Build une image docker depuis un dockerfile
-//@param
-//dockerType : type d'image voulu (ex : nodejs, mongodb)
-//name : nom à attribuer à l'image
+
+/**
+ * Cette fonction obtien une image docker depuis le docker hub en fonction d'un docker file pré crée
+ * Il s'agit en quelque sorte du catalogue docker de notre application
+ * Il monte l'image pour servir de base à la creation du container (image = type de container)
+ * @param containerType
+ * @returns {Promise<any>}
+ */
 function createDockerImage(containerType) {
     return new Promise(function (resolve, reject) {
         if (containerType === "" || containerType === undefined) {
@@ -39,11 +52,13 @@ function createDockerImage(containerType) {
 
 }
 
-
-//Création d'un volume virtuelle
-//@param
-//dockerType : type d'image voulu (ex : nodejs, mongodb)
-//name : nom du volume (même nom que l'image correspondante)
+/**
+ * Cette fonction cree un volume docker virtuel qui pourra etre attaché a un container
+ * Ce volume permet de ne pas perdre les données du container en cas d'arret ou de suppression
+ * @param containerType
+ * @param containerName
+ * @returns {Promise<any>}
+ */
 function createVolume(containerType, containerName) {
     return new Promise(function (resolve, reject) {
         if (containerType === "" || containerType === undefined) {
@@ -77,11 +92,15 @@ function createVolume(containerType, containerName) {
     });
 }
 
-
-//Lance un container de l'image passé en paramètre et monte le volume correspondant
-//@param
-//dockerType : type d'image voulu (ex : nodejs, mongodb)
-//name : nom de l'image
+/**
+ * Cette fonction permet de lancer un container docker avec docker run en fonction de l'image passé en paramètre
+ * met en place un volume deja créé
+ * @param containerType
+ * @param containerName
+ * @param cpu (optionnel)
+ * @param ram (optionnel)
+ * @returns {Promise<any>}
+ */
 function startContainer(containerType, containerName, cpu, ram) {
     return new Promise(function (resolve, reject) {
         let catalog = catalogue.getCatalog();
@@ -90,7 +109,6 @@ function startContainer(containerType, containerName, cpu, ram) {
         let ramLimitation;
         let port;
         let arrayPortLength = Object.keys(config.portList).length;
-        console.log(catalog);
         if (containerName === "" || containerName === undefined) {
             console.log("their is no name field");
             errorLogger.logError("unable to start container : their is no name field");
@@ -109,21 +127,17 @@ function startContainer(containerType, containerName, cpu, ram) {
             reject({err: 15, msg: "DockerType not existing into catalog"});
         }
         if (cpu === "" || cpu === undefined) {
-            console.log("no ram in req");
             cpuLimitation = catalog[i].CPU_allowed_by_default;
         } else {
             cpuLimitation = cpu;
         }
 
         if (ram === "" || ram === undefined) {
-            console.log("no cpu in req");
             ramLimitation = catalog[i].RAM_allowed_by_default;
         } else {
             ramLimitation = ram;
         }
         let p = 0;
-        console.log('test');
-        console.log("portlist length " + config.portList[p]);
         while (arrayPortLength > p && config.portList[p] === true) {
             p++;
         }
@@ -132,9 +146,9 @@ function startContainer(containerType, containerName, cpu, ram) {
         } else {
             port = 46000 + p;
         }
-        exec("docker run --name " + containerName + " -m " + ramLimitation + " --cpus=" + cpuLimitation + " -p " + port + ":8080 --expose=8080 --mount source=" + containerName + ",target=/home  " + containerType, (err, stdout, stderr) => {
+        let cmd = "docker run -d --name " + containerName + " -m " + ramLimitation + " --cpus=" + cpuLimitation + " -p " + port + ":8080 --expose=8080 --mount source=" + containerName + ",target=/home  " + containerType;
+        exec(cmd, (err, stdout, stderr) => {
             if (err) {
-                console.log(err);
                 reject({err: 2, msg: "Failed to start container"});
             } else {
                 let docker = {
@@ -166,7 +180,7 @@ function startContainer(containerType, containerName, cpu, ram) {
  * @param ram (optionnel)
  * @returns {Promise<*>}
  */
-module.exports.deployContainer = async function (typeContainer, nameContainer, cpu, ram)
+module.exports.deployContainer = function (typeContainer, nameContainer, cpu, ram)
 {
     return new Promise(function (resolve, reject)
     {
@@ -224,7 +238,7 @@ module.exports.restart=function(nameContainer)
 //met un docker existant en pause
 //@param
 //name : nom du container à mettre en pause
-module.exports.pauseContainer = async function (nameContainer) {
+module.exports.pauseContainer = function (nameContainer) {
     return new Promise(function (resolve, reject) {
         let config = getSystemConfig();
         if (nameContainer === "" || nameContainer === undefined) {
@@ -232,27 +246,32 @@ module.exports.pauseContainer = async function (nameContainer) {
             reject({err: 1, msg: "no name found"});
         }
         let i = 0;
-        while (i < config.containersList.length && config.containersList[i].id !== nameContainer) {
+        while (i < config.containersList.length && config.containersList[i].nameApp !== nameContainer) {
             i++;
         }
         if (i === config.containersList.length) {
             errorLogger.logError("unable to pause container : " + nameContainer + " this container does not exist");
             reject({err: 15, msg: "This container does not exist"});
         }
-        if (config.containersList[i].pause === true) {
+        if (config.containersList[i].isStarted === true) {
             errorLogger.logError("unable to pause container : " + nameContainer + " container already in pause states");
             reject({err: 11, msg: "Container already in pause states"});
         }
-        exec("docker pause " + nameContainer, (err, stdout, stderr) => {
-            if (err) {
-                console.log("Error occur during container pause");
-                errorLogger.logError("unable to pause container : " + nameContainer + " error occur during container pause");
-                reject({err: 2, msg: "Failed to pause container"});
-            } else {
-                config.containersList[i].isStarted = false;
-                putConfig(config);
-                resolve({err: 0, msg: "Container succefully passed in paused"});
-            }
+        getContainerIDByName(nameContainer).then (function (data) {
+            console.log("docker pause " + data.msg);
+            exec("docker pause " + data.msg, (err, stdout, stderr) => {
+                if (err) {
+                    console.log("Error occur during container pause");
+                    errorLogger.logError("unable to pause container : " + nameContainer + " error occur during container pause");
+                    reject({err: 2, msg: "Failed to pause container"});
+                } else {
+                    config.containersList[i].isStarted = false;
+                    putConfig(config);
+                    resolve({err: 0, msg: "Container succefully passed in paused"});
+                }
+            })
+        }).catch(function (err) {
+            reject(err);
         })
     })
 };
@@ -268,24 +287,30 @@ module.exports.unpauseContainer = function (nameContainer) {
         }
         let config = getSystemConfig();
         let i = 0;
-        while (i < config.containersList.length && config.containersList[i].id !== nameContainer) {
+        while (i < config.containersList.length && config.containersList[i].nameApp !== nameContainer) {
             i++;
         }
         if (i === config.containersList.length) {
             reject({err: 15, msg: "This container does not exist"});
         }
-        if (config.containersList[i].pause === false) {
+        if (config.containersList[i].isStarted === false) {
             reject ({err: 11, msg: "Container already in running states"});
         }
-        exec("docker unpause " + nameContainer, (err, stdout, stderr) => {
-            if (err) {
-                console.log("Error occur during docker pause");
-                reject({err: 2, msg: "Failed to pause container"});
-            } else {
-                config.containersList[i].pause = false;
-                putConfig(config);
-                resolve({err: 0, msg: "Container succefully passed in paused"});
-            }
+        getContainerIDByName(nameContainer).then (function (data) {
+            console.log("docker unpause " + data.msg);
+            exec("docker unpause " + data.msg, (err, stdout, stderr) => {
+                if (err) {
+                    console.log("Error occur during container pause");
+                    errorLogger.logError("unable to pause container : " + nameContainer + " error occur during container pause");
+                    reject({err: 2, msg: "Failed to pause container"});
+                } else {
+                    config.containersList[i].isStarted = true;
+                    putConfig(config);
+                    resolve({err: 0, msg: "Container succefully unpaused"});
+                }
+            })
+        }).catch(function (err) {
+            reject(err);
         })
     })
 };
@@ -396,25 +421,32 @@ async function deleteContainer(req) {
 
 
 function getSystemConfig() {
-    return JSON.parse(fs.readFileSync(path.join(__dirname,"system/containerConfig.json"), 'utf8'));
+    return JSON.parse(fs.readFileSync(path.join(__dirname,"../system/containerConfig.json"), 'utf8'));
 }
 
 function putConfig(config) {
     let json = JSON.stringify(config);
-    fs.writeFile(path.join(__dirname,'./system/containerConfig.json'), json, 'utf8', (err, data) => {
-        if (err) {
-            console.log(err);
-            errorLogger.logError("unable to write in containerConfig file : " + err);
-            return {"err": "30", "msg": "Failed to write config"}
-        } else {
-            return {"err": "0", "msg": "Config changed"}
-        }
-    });
+    let filepath = path.join(__dirname,'../system/containerConfig.json');
+    fs.writeFileSync(filepath, json, 'utf8');
 }
 
 module.exports.getContainerInstalled = function () {
     const pathToContainerList = path.join(__dirname,"../system/containerConfig.json");
-    let json = require(pathToContainerList);
+    let json = JSON.parse(fs.readFileSync(pathToContainerList, 'utf8'));
     return json.containersList;
 };
+
+function getContainerIDByName(containerName){
+    return new Promise(function (resolve, reject) {
+        exec("docker ps -aqf \"name=" + containerName + "\"", (err, stdout, stderr) => {
+            if (err) {
+                console.log(err);
+                reject ({"err": "2", "msg": "Failed to get dockerID"});
+            } else {
+                console.log(stdout);
+                resolve ({"err": "0", "msg": stdout})
+            }
+        })
+    })
+}
 
