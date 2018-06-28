@@ -36,7 +36,7 @@ app.use(sassMiddleware(
     }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// shedule each 5 second a savegard of RAM and CPU usage to display maitrics
+// chaque 5 secondes on sauvegarde le pourcentage de RAM et de CPU utilisé pour l'affichage des maitrics
 let job = new CronJob(
     {
         cronTime: '*/30 */2 * * * *',

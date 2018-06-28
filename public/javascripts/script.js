@@ -100,7 +100,7 @@ setInterval(function()
 }, 1000 * 60);
 
 /************************************/
-// notifications
+// Gestion des messages de notifications
 
 $("#notification")
     .click(function ()
@@ -119,7 +119,7 @@ $("#notification_off")
 
 
 /************************************/
-// TODO Manage Container
+// Management des Containers
 
 $("#addNewContainer").click(function ()
 {
@@ -241,9 +241,9 @@ $(".restart").click(function()
 });
 
 /************************************/
-//
+// Gestion de la div modale
 
-
+// ajoute
 $(".chooseAContainer").click(function ()
 {
    $("#container-type").val($(this).attr("id"));

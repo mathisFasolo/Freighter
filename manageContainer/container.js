@@ -235,9 +235,11 @@ module.exports.restart=function(nameContainer)
     });
 };
 
-//met un docker existant en pause
-//@param
-//name : nom du container à mettre en pause
+/**
+ * Met un docker existant en pause
+ * @param nameContainer
+ * @returns {Promise<any>}
+ */
 module.exports.pauseContainer = function (nameContainer) {
     return new Promise(function (resolve, reject) {
         let config = getSystemConfig();
@@ -276,9 +278,11 @@ module.exports.pauseContainer = function (nameContainer) {
     })
 };
 
-//relance un container mis en pause
-//@param
-//name : nom du container
+/**
+ * relance un container mis en pause
+ * @param nameContainer
+ * @returns {Promise<any>}
+ */
 module.exports.unpauseContainer = function (nameContainer) {
     return new Promise(function (resolve, reject) {
         if (nameContainer === "" || nameContainer === undefined) {
@@ -315,9 +319,11 @@ module.exports.unpauseContainer = function (nameContainer) {
     })
 };
 
-//kill les process d'un container
-//@param
-//name : nom de container à kill
+/**
+ * kill les process d'un container
+ * @param req
+ * @returns {Promise<*>}
+ */
 async function killContainer(req) {
     if (req.name === "" || typeof req.name === undefined) {
         console.log("their is no name field");
@@ -346,9 +352,11 @@ async function killContainer(req) {
     })
 }
 
-//restart un container kill ou planté
-//@param
-//name : nom du container à relancer
+/**
+ * restart un container kill ou planté
+ * @param req
+ * @returns {Promise<*>}
+ */
 async function restartContainer(req) {
     if (req.name === "" || typeof req.name === undefined) {
         console.log("their is no name field");
@@ -377,9 +385,11 @@ async function restartContainer(req) {
     })
 }
 
-//Supprime le container, son image et le volume associé
-//@param
-//name: nom du container à supprimer
+/**
+ * Permet de supprimer un container , son image et son volume associé
+ * @param req
+ * @returns {Promise<*>}
+ */
 async function deleteContainer(req) {
     if (req.name === "" || typeof req.name === undefined) {
         console.log("their is no name field");
@@ -419,23 +429,39 @@ async function deleteContainer(req) {
     })
 }
 
-
+/**
+ * Retourne toute la config dans le fichier containerConfig.json
+ * @returns {any}
+ */
 function getSystemConfig() {
     return JSON.parse(fs.readFileSync(path.join(__dirname,"../system/containerConfig.json"), 'utf8'));
 }
 
+/**
+ * ajoute au fichier container config le tableau des nouveau containers
+ * @param config le txt json
+ */
 function putConfig(config) {
     let json = JSON.stringify(config);
     let filepath = path.join(__dirname,'../system/containerConfig.json');
     fs.writeFileSync(filepath, json, 'utf8');
 }
 
+/**
+ * Retourne tous les containers enregistrés dans le fichier containerConfig.json
+ * @returns {*}
+ */
 module.exports.getContainerInstalled = function () {
     const pathToContainerList = path.join(__dirname,"../system/containerConfig.json");
     let json = JSON.parse(fs.readFileSync(pathToContainerList, 'utf8'));
     return json.containersList;
 };
 
+/**
+ * Recupére le docker ID via un nom de container passé en paremettre
+ * @param containerName
+ * @returns {Promise<any>}
+ */
 function getContainerIDByName(containerName){
     return new Promise(function (resolve, reject) {
         exec("docker ps -aqf \"name=" + containerName + "\"", (err, stdout, stderr) => {

@@ -31,6 +31,7 @@ $borderRadius : 3px;
   transform: translateY(-50%);
 }
 
+// rend une image ou un texte non selectionnable
 @mixin notDraggable()
 {
   user-drag: none;

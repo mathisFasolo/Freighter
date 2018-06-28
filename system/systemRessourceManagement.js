@@ -81,6 +81,9 @@ module.exports.getRAM_USAGE = function ()
     })
 };
 
+/**
+ * sauvegarde les informations de maitrics RAM en % dans un fichier JSON
+ */
 module.exports.saveRAM_USAGE = function ()
 {
     let filePath = "./maitrics/data/ram_usage.json";
@@ -108,6 +111,9 @@ module.exports.saveRAM_USAGE = function ()
     });
 };
 
+/**
+ * sauvegarde les informations de maitrics CPU en % dans un fichier JSON
+ */
 module.exports.saveCPU_USAGE = function ()
 {
     let filePath = "./maitrics/data/cpu_usage.json";

@@ -6,6 +6,10 @@
 let fs = require('fs');
 const pathToFileError = "./error.txt";
 
+/**
+ * permet d'enregistrer une erreur en paramettre dans un fichier de log : erreur.txt
+ * @param error
+ */
 module.exports.logError = function (error)
 {
     let errorLine = "- append on : " + new Date + " error logged : " + error + "\n";
